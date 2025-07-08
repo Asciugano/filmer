@@ -9,7 +9,3 @@ export const login = (req, res) => {
 export const logout = (req, res) => {
   res.send('logout route');
 }
-
-export const checkAuth = (req, res) => {
-  res.send('checkAuth route');
-}

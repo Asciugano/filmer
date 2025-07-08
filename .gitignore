@@ -1,0 +1,30 @@
+# === FRONTEND (React/Vite/Next.js) ===
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.env*
+frontend/.vite/
+frontend/.DS_Store
+
+# === BACKEND (Node.js/Express) ===
+backend/node_modules/
+backend/.env*
+backend/dist/
+backend/.DS_Store
+backend/npm-debug.log*
+
+# === COMUNI ===
+*.log
+*.tsbuildinfo
+*.swp
+*.tmp
+*.bak
+.vscode/
+.idea/
+.DS_Store
+
+# === LOCKFILES (scegli solo uno) ===
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

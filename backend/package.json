@@ -16,6 +16,7 @@
     "dotenv": "^17.1.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "justwatch-api": "^1.0.7",
     "jws": "^4.0.0",
     "pg": "^8.16.3",
     "sequelize": "^6.37.7"

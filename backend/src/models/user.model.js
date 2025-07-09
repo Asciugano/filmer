@@ -15,9 +15,11 @@ const sequelize = new Sequelize(
   }
 );
 
-const user_schema = sequelize.define('users', {
+const User = sequelize.define('users', {
   id: {
     type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
   },
   email: {
     type: DataTypes.TEXT,
@@ -40,7 +42,5 @@ const user_schema = sequelize.define('users', {
     },
   },
 });
-
-const User = sequelize.define('User', user_schema);
 
 export default User;

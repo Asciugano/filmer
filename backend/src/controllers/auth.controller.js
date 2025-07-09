@@ -74,6 +74,29 @@ export const logout = (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
+    const { full_name, email } = req.body;
+    const user = await User.findByPk(req.user.id, {
+      attributes: {
+        exclude: ['password'],
+      }
+    });
+
+    if (full_name) {
+      user.full_name = full_name;
+    }
+    if (email) {
+      user.email = email;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      id: user.id,
+      full_name: user.full_name,
+      email: user.email,
+    });
   } catch (e) {
+    console.log('Error in update Profile', e.message);
+    res.status(500).json({ message: 'Internal Server Error', error: e.message });
   }
 }

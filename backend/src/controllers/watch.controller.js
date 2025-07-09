@@ -1,6 +1,10 @@
-import JustWatch from "justwatch-api";
+import axios from "axios";
+import dotenv from "dotenv";
+import { response } from "express";
 
-const justwatch = new JustWatch({ locale: 'it_IT' });
+dotenv.config();
+
+const IMAGE_BASE_URL = 'https://images.justwatch.com';
 
 export const getMoviesByPlatform = async (req, res) => {
   let { platforms, content_types } = req.body;
@@ -8,22 +12,25 @@ export const getMoviesByPlatform = async (req, res) => {
   try {
     if (!platforms || !Array.isArray(platforms) || platforms.length === 0)
       return res.status(400).json({ message: 'You must specify at least 1 straming platform' });
-    if (!content_types) {
-      content_types = ['movie'];
-    }
 
-    const data = await justwatch.search({
-      providers: platforms,
-      content_types: content_types,
-      page_size: 20,
-      page: 1,
+    const response = await axios.get('https://imdb236.p.rapidapi.com/api/imdb/search', {
+      params: {
+        type: content_types || 'movie',
+        rows: '25',
+        sortOrder: 'ASC',
+        sortField: 'id',
+      },
+      headers: {
+        'x-rapidai-key': process.env.RAPID_API_KEY,
+        'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+      }
     });
 
     res.status(200).json({
-      results: data.items.map(film => ({
-        title: film.title,
-        poster: film.poster,
-        provider: film.offers?.[0]?.provider_id,
+      results: response.data.map(item => ({
+        primaryTitle: item.primaryTitle,
+        description: item.description,
+        primaruImage: item.primaruImage,
       }))
     });
   } catch (e) {
@@ -38,24 +45,28 @@ export const getMoviesByGenre = async (req, res) => {
   try {
     if (!platforms || !Array.isArray(platforms) || platforms.length === 0)
       return res.status(400).json({ message: 'You must specify at least 1 straming platform' });
-    if (!content_types)
-      content_types = ['movie'];
     if (!genres || !Array.isArray(genres) || genres.length === 0)
       return res.status(400).json({ message: 'You must specify at least 1 genre' });
 
-    const data = await justwatch.search({
-      providers: platforms,
-      content_types: content_types,
-      genres: genres,
-      page_size: 20,
-      page: 1,
+    const response = await axios.get('https://imdb236.p.rapidapi.com/api/imdb/search', {
+      params: {
+        type: content_types || 'movie',
+        genres: genres,
+        rows: '25',
+        sortOrder: 'ASC',
+        sortField: 'id',
+      },
+      headers: {
+        'x-rapidai-key': process.env.RAPID_API_KEY,
+        'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+      }
     });
 
     res.status(200).json({
-      results: data.items.map(item => ({
-        title: item.title,
-        poster: item.poster,
-        provider: item.offers?.[0]?.provider_id ?? null,
+      results: response.data.map(item => ({
+        primaryTitle: item.primaryTitle,
+        description: item.description,
+        primaruImage: item.primaruImage,
       }))
     });
   } catch (e) {

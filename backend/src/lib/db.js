@@ -1,4 +1,3 @@
-import pkg, { Pool } from 'pg';
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 

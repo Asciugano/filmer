@@ -81,6 +81,9 @@ export const updateProfile = async (req, res) => {
       }
     });
 
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!full_name && !email) return res.status(400).json({ message: 'You must change at least one filed' });
+
     if (full_name) {
       user.full_name = full_name;
     }
